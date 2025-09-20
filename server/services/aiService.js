@@ -1,202 +1,92 @@
-const { VertexAI } = require('@google-cloud/aiplatform');
-
-// Initialize Vertex AI
-const vertexAI = new VertexAI({
-  project: process.env.GOOGLE_CLOUD_PROJECT_ID,
-  location: process.env.GOOGLE_CLOUD_LOCATION || 'us-central1',
-});
-
-const model = vertexAI.preview.getGenerativeModel({
-  model: 'gemini-pro',
-  generationConfig: {
-    maxOutputTokens: 2048,
-    temperature: 0.4,
-    topP: 1,
-    topK: 32,
-  },
-});
-
+// Temporary simplified AI service (replace with Google AI later)
 class AIService {
   /**
    * Generate product description using AI
-   * @param {string} productName - Name of the product
-   * @param {string} craftType - Type of craft (pottery, textile, etc.)
-   * @param {string} description - Brief description from artisan
-   * @param {string} culturalContext - Cultural background information
    */
   static async generateProductDescription(productName, craftType, description, culturalContext = '') {
-    const prompt = `
-      You are an expert marketing copywriter specializing in traditional crafts and artisanal products.
+    // Mock response for testing
+    return `🌟 ${productName} - ${craftType} 🌟
 
-      Create a compelling, detailed product description for:
+This exquisite ${craftType.toLowerCase()} piece showcases the finest traditional craftsmanship passed down through generations. ${description}
 
-      Product Name: ${productName}
-      Craft Type: ${craftType}
-      Artisan Description: ${description}
-      Cultural Context: ${culturalContext}
+${culturalContext ? `Cultural Significance: ${culturalContext}` : ''}
 
-      The description should:
-      - Be 150-200 words long
-      - Highlight traditional craftsmanship and cultural significance
-      - Use engaging, descriptive language that appeals to modern consumers
-      - Include details about materials, techniques, and heritage
-      - End with a call to action encouraging purchase
-      - Be written in English
+✨ Features:
+- Handcrafted with traditional techniques
+- Premium quality materials
+- Unique cultural heritage
+- Perfect for collectors and art enthusiasts
 
-      Focus on authenticity, quality, and the story behind the product.
-    `;
+Support traditional artisans and bring home a piece of cultural heritage! 🛍️
 
-    try {
-      const result = await model.generateContent(prompt);
-      const response = await result.response;
-      return response.text();
-    } catch (error) {
-      console.error('Error generating product description:', error);
-      throw new Error('Failed to generate product description');
-    }
+#Handmade #TraditionalCraft #CulturalHeritage #ArtisanMade`;
   }
 
   /**
    * Generate social media posts
-   * @param {string} productName - Name of the product
-   * @param {string} description - Product description
-   * @param {string} platform - Platform (instagram, facebook, twitter)
    */
   static async generateSocialMediaPost(productName, description, platform = 'instagram') {
-    const platformInstructions = {
-      instagram: 'Create an engaging Instagram post (max 2200 characters) with relevant hashtags',
-      facebook: 'Create an engaging Facebook post with a question to encourage engagement',
-      twitter: 'Create a compelling Twitter post (max 280 characters) with relevant hashtags'
-    };
+    return `🌟 Discover the beauty of traditional craftsmanship! 🌟
 
-    const prompt = `
-      Create a social media post for ${platform} about this artisanal product:
+${productName}
+${description}
 
-      Product: ${productName}
-      Description: ${description}
+✨ Handcrafted with love and tradition
+🛍️ Support local artisans
+#TraditionalCraft #Handmade #CulturalHeritage
 
-      ${platformInstructions[platform]}
-
-      Include:
-      - Compelling hook or question
-      - Highlight cultural significance
-      - Call to action
-      - Relevant hashtags
-      - Emoji where appropriate
-    `;
-
-    try {
-      const result = await model.generateContent(prompt);
-      const response = await result.response;
-      return response.text();
-    } catch (error) {
-      console.error('Error generating social media post:', error);
-      throw new Error('Failed to generate social media post');
-    }
+Shop now and bring home authentic artistry!`;
   }
 
   /**
    * Generate marketing copy for email campaigns
-   * @param {string} productName - Name of the product
-   * @param {string} artisanStory - Story about the artisan
-   * @param {string} specialOffer - Any special offers or promotions
    */
   static async generateMarketingCopy(productName, artisanStory, specialOffer = '') {
-    const prompt = `
-      Write compelling marketing copy for an email campaign featuring a traditional craft product.
+    return {
+      subject: `Discover Authentic ${productName} - Limited Time Offer!`,
+      body: `Dear Craft Enthusiast,
 
-      Product: ${productName}
-      Artisan Story: ${artisanStory}
-      Special Offer: ${specialOffer}
+We're excited to introduce you to our latest collection featuring authentic ${productName}.
 
-      Create:
-      1. Subject line (max 50 characters)
-      2. Email body (200-300 words) that includes:
-         - Attention-grabbing opening
-         - Product highlights
-         - Artisan story integration
-         - Cultural significance
-         - Special offer if applicable
-         - Strong call to action
+${artisanStory}
 
-      Focus on authenticity, cultural heritage, and exclusivity.
-    `;
+${specialOffer ? `Special Offer: ${specialOffer}` : ''}
 
-    try {
-      const result = await model.generateContent(prompt);
-      const response = await result.response;
-      return response.text();
-    } catch (error) {
-      console.error('Error generating marketing copy:', error);
-      throw new Error('Failed to generate marketing copy');
-    }
+Each piece tells a unique story of tradition, skill, and cultural heritage. By choosing our handcrafted items, you're not just buying a product - you're preserving a legacy.
+
+Shop now and experience the difference of authentic craftsmanship!
+
+Best regards,
+Kala Kaar Team`
+    };
   }
 
   /**
    * Generate storytelling content about artisan's craft
-   * @param {string} artisanName - Name of the artisan
-   * @param {string} craftType - Type of craft
-   * @param {string} personalStory - Personal story from artisan
-   * @param {string} culturalSignificance - Cultural significance of the craft
    */
   static async generateStoryContent(artisanName, craftType, personalStory, culturalSignificance) {
-    const prompt = `
-      Write an engaging story about a traditional artisan and their craft that can be used on a website or blog.
+    return `The Art of ${craftType}: A Journey with ${artisanName}
 
-      Artisan: ${artisanName}
-      Craft: ${craftType}
-      Personal Story: ${personalStory}
-      Cultural Significance: ${culturalSignificance}
+${personalStory}
 
-      The story should be:
-      - 300-400 words long
-      - Written in third person
-      - Include the artisan's personal journey
-      - Explain the cultural and historical context
-      - Highlight the importance of preserving traditional crafts
-      - End with information about how readers can support the artisan
+${culturalSignificance}
 
-      Make it inspiring and educational, appealing to modern audiences interested in cultural heritage.
-    `;
+In today's fast-paced world, artisans like ${artisanName} remind us of the importance of preserving traditional crafts. Each piece created is not just an object, but a testament to human creativity and cultural continuity.
 
-    try {
-      const result = await model.generateContent(prompt);
-      const response = await result.response;
-      return response.text();
-    } catch (error) {
-      console.error('Error generating story content:', error);
-      throw new Error('Failed to generate story content');
-    }
+Supporting traditional artisans means investing in cultural preservation and sustainable craftsmanship. When you choose handcrafted items, you're choosing quality, authenticity, and a story worth telling.
+
+Discover more about ${artisanName}'s work and help preserve this beautiful tradition for future generations.`;
   }
 
   /**
    * Generate SEO-optimized product titles and descriptions
-   * @param {string} baseTitle - Base product title
-   * @param {string} keywords - Additional keywords to include
    */
   static async generateSEOContent(baseTitle, keywords = '') {
-    const prompt = `
-      Generate SEO-optimized content for an e-commerce product listing:
-
-      Base Product Title: ${baseTitle}
-      Keywords: ${keywords}
-
-      Provide:
-      1. SEO-optimized title (max 60 characters)
-      2. Meta description (max 160 characters)
-      3. Search tags (comma-separated list)
-
-      Focus on traditional crafts, authenticity, handmade quality, and cultural heritage keywords.
-    `;
-
-    try {
-      const result = await model.generateContent(prompt);
-      const response = await result.response;
-      return response.text();
-    } catch (error) {
-      console.error('Error generating SEO content:', error);
-      throw new Error('Failed to generate SEO content');
-    }
+    return {
+      title: `${baseTitle} - Authentic Handcrafted ${keywords}`,
+      metaDescription: `Discover authentic ${baseTitle}. Handcrafted with traditional techniques. ${keywords}. Premium quality, cultural heritage.`,
+      tags: `${baseTitle}, handcrafted, traditional, artisan, ${keywords}`
+    };
   }
 }
 
